@@ -16,7 +16,7 @@ int wordControl(struct Node *header,char * word)
 {
     if(header!=NULL){
         if(strcmp(header->data,word)==0){
-            header->count+=1;     //kelime eger linked listte var olan bir kelimeyse counterini arttiriyor
+            header->count+=1;   
         }
         else{
             return wordControl(header->next,word);
@@ -32,11 +32,11 @@ void append(struct Node** head_ref, char *new_data,char dosya[])
     int control=wordControl(*head_ref,new_data);
     if(!control){
 
-	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));// allocate memory for node
+	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
 
 
 	new_node->data = new_data;
-	strcpy(new_node->dosya,dosya); // hangi txt nin listesi oldugunu anlamak icin
+	strcpy(new_node->dosya,dosya);
 	new_node->count=1;
 	new_node->next=NULL;
 
@@ -126,7 +126,6 @@ struct Node *sirala( struct Node *start )
     int changed = 1;
 
      //We need an extra item at the top of the list just to help with assigning switched data to the 'next' of a previous item.
-     //It (top) gets deleted after the data is sorted.
     top = (struct Node *)malloc(sizeof(struct Node));
     top->next = start;
     if( start != NULL && start->next != NULL ) {
@@ -150,7 +149,6 @@ struct Node *sirala( struct Node *start )
     free( top );
     return p;
 }
-
 
 // This function prints contents of linked list starting from head
 void printList(struct Node *node)
@@ -183,8 +181,6 @@ struct Node* find(struct Node* ilk, char* word) {  // kelime yoksa null dondurur
    //if data found, return the current Link
    return current;
 }
-
-//kac tane ortak olmayan kelime varsa j sayisi verir
 int findortak_degil(char *x[], char* word) {
     int i,j=0;
     for(i=0;i<10;i++){
@@ -194,8 +190,6 @@ int findortak_degil(char *x[], char* word) {
     }
   return j;
 }
-
-//Her iki txt dosyasinin ilk 10 kelimesinin birlesim vektorunu olusturur
 int birlesim_liste(struct Node* head1,struct Node* head2,char *x[]){
 
     struct Node* tmp3=head2;
@@ -206,14 +200,12 @@ int birlesim_liste(struct Node* head1,struct Node* head2,char *x[]){
         tmp4=findortak_degil(x,tmp3->data);
         if(tmp4==10){
             counter++;
-            x[9+counter]=tmp3->data; // ortak olmayan kelimeleri listeye ekler
+            x[9+counter]=tmp3->data;
         }
         tmp3=tmp3->next;
     }
     return counter;
 }
-
-//benzerlik bulmak icin kullanilcak matrisi olusturur
 int design2Darray(struct Node* head1,struct Node* head2,int **dizi,char *x[])
 {
     struct Node* tmp=head1;
@@ -225,19 +217,19 @@ int design2Darray(struct Node* head1,struct Node* head2,int **dizi,char *x[])
 
     int i,t;
     for(i=0;i<10;i++){
-        dizi[0][i]=tmp->count; // ilk txt dosyasinin ilk 10 kelimesinin count u matrise koyuldu
+        dizi[0][i]=tmp->count; 
         x[i]=tmp->data;
         tmp2=find(head2,tmp->data);
         if(tmp2){
-            dizi[1][i]=tmp2->count; //ikinici txt dosyasindaki count degerleri matrise koyuldu
+            dizi[1][i]=tmp2->count;
         }
         else{
-            dizi[1][i]=0; // eger elime yoksa count u 0 oldu
+            dizi[1][i]=0;
         }
         tmp = tmp->next;
     }
 
-    int no_common=birlesim_liste(head1,head2,x); // ortak olmayan kelime sayisi
+    int no_common=birlesim_liste(head1,head2,x);
 
    for(t=10;t<10+no_common;t++){
         x1=find(tmp3,x[t]);
@@ -256,7 +248,6 @@ int design2Darray(struct Node* head1,struct Node* head2,int **dizi,char *x[])
     return no_common;
 }
 
-// dosyadan okunan kelimeleri splitler
 char *getWord(FILE *fp){
     char word[100];
     int ch, i=0;
@@ -299,7 +290,7 @@ int main()
     struct Node* head = NULL;
     struct Node* head2 = NULL;
 
-    char *x[20]; // benzerlik bulmak icin tutulan kelimeler listesi
+    char *x[20];
     int **dizi=createMatrix();
 
 
@@ -406,9 +397,9 @@ printList(head);
 
         else if(strcmp(head->dosya,dosya1)==0){
             int no_common=design2Darray(head,head2,dizi,x);
-            int multi=0;//ic carpim
-            double norm1=0;//ilk alinan dosyanin vektorunun normu
-            double norm2=0;//ikinci alinan dosyanin vektorunun normu
+            int multi=0;
+            double norm1=0;
+            double norm2=0;
             int m=0;
             for(m=0;m<10+no_common;m++){
                 multi+=dizi[0][m]*dizi[1][m];
@@ -416,7 +407,7 @@ printList(head);
                 norm2+=dizi[1][m]*dizi[1][m];
             }
             float sim;
-            if(sqrt(norm1)*sqrt(norm2)==0){//division zero oldugunda benzerligi 0 yapiyor
+            if(sqrt(norm1)*sqrt(norm2)==0){
                 sim=0;
             }
             else{
@@ -428,9 +419,9 @@ printList(head);
 
         else if(strcmp(head2->dosya,dosya1)==0){
             int no_common=design2Darray(head2,head,dizi,x);
-            int multi=0;//ic carpim
-            double norm1=0;//ilk alinan dosyanin vektorunun normu
-            double norm2=0;//ikinci alinan dosyanin vektorunun normu
+            int multi=0;
+            double norm1=0;
+            double norm2=0;
             int m=0;
             for(m=0;m<10+no_common;m++){
                 multi+=dizi[0][m]*dizi[1][m];
@@ -438,7 +429,7 @@ printList(head);
                 norm2+=dizi[1][m]*dizi[1][m];
             }
             float sim;
-            if(sqrt(norm1)*sqrt(norm2)==0){//division zero oldugunda benzerligi 0 yapiyor
+            if(sqrt(norm1)*sqrt(norm2)==0){
                 sim=0;
             }
             else{
