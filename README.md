@@ -1,4 +1,4 @@
-# Assigntmens-with-C
+# Assignments-with-C
 	This includes all projects developed with C in Data Structures.
 	1st-Assignment finds a solution path of the given maze.
 	2nd-Assignment is basic client-server architecture.
